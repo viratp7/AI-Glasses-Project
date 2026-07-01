@@ -18,6 +18,8 @@ Short term Goals:
 - Make TTS engine say diffrent objects and 
 - Say detected objects more than once if their still detected pass the time limit
 Based on my reasearch, the reason the TTS engine does not say the object more than once, it's because it's to slow since it uses my enternal OS to generate the audio
+### Possible Solutions
+After troubleshooting and testing I discovered the TTS engine takes to long to process text to speech causing issues in it giving output more than once (posibility)
 
 ## LongTerm
 I have many long term goals for the software that are based on the needs and wants of Vissually impaired individuals
