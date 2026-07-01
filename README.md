@@ -39,14 +39,4 @@ The most important thing these two device do not do is automatic object detectio
 With glasses am going to eliminate the need for a user to know when to use AI. The AI will filter out everything and notfiy the user automatically of important things that they should know like a wet floor sign.
 
 
-# How to Run
-
-Install the required libraries:
-pip install -r requirements.txt
-
-Run the main program:
-python main.py
-
-Note: The project currently requires a working webcam and is not complete at all
-
 
