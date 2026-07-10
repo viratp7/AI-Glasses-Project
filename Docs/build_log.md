@@ -7,3 +7,5 @@
 ### What I learned: I learned about diffrent Yolo models and how they compare and work. Also I learn about text to speech modules like that pyttxs3 mouldle. Also from my failure I learned that am going to have an efficient audio system for my code to run well
 ### Next Steps: I need find an efficient method to TTS audio output, that could be changing the moudle or finding a new way to relay the information the model detects back to the user. Because based on my research, the audio system in my code is essentially too slow compared to everything else. Making it fall behind and skip. However, this is speculation and am going to need to do further testing. 
 
+## DATE: 2026-07-02
+### What I Did: The previos issue was the code only said the text to speech one time, but after swapping the text to speech for a simple print function, I releize the TTS is too slow. Going to need to figure out wheather if am going to use a diffrent TTS method or find another solution.
