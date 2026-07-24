@@ -1,17 +1,26 @@
 from ultralytics import YOLO
 import cv2
-import pyttsx3
 import time
+import pygame
 
 model = YOLO("yolov8n.pt")
 
-engine = pyttsx3.init()
-engine.setProperty("volume", 1.0)
+
 
 cap = cv2.VideoCapture(0)
-
+pygame.mixer.init()
 last_spoken_time = 0
 speak_cooldown = 3
+last_spoken_object = None
+sounds = {
+    "person": pygame.mixer.Sound("audio/person_in_front.wav"),
+    "keyboard": pygame.mixer.Sound("audio/keyboard_in_front.wav"),
+    "cell phone": pygame.mixer.Sound("audio/phone_in_front.wav"),
+    "stop sign": pygame.mixer.Sound("audio/stop_sign.wav")
+
+}
+
+
 
 while True:
     success, frame = cap.read()
@@ -47,10 +56,16 @@ while True:
             
     current_time = time.time()
     if object_to_speak is not None:
-        if current_time - last_spoken_time > speak_cooldown:
-            engine.say(f" {object_to_speak} {object_to_speak} in front")
-            engine.runAndWait()
-            last_spoken_time = current_time
+ 
+        object_changed = object_to_speak != last_spoken_object
+
+        if current_time - last_spoken_time > speak_cooldown and object_changed:
+            sound = sounds.get(object_to_speak)
+            if sound is not None:
+                sound.play()
+                print(object_to_speak)
+                last_spoken_time = current_time
+                last_spoken_object = object_to_speak
 
 
     cv2.imshow("AI Glasses YOLO Test", frame)
