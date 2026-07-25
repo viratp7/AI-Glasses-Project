@@ -19,7 +19,8 @@ audio_phrases = {
     "Stop sign ahead": "stop_sign.wav",
     "Keyboard in front": "keyboard_in_front.wav",
     "Phone in front": "phone_in_front.wav",
-    "Stop sign ahead": "stop_sign.wav"
+    "Stop sign ahead": "stop_sign.wav",
+    "Mouse in front": "mouse_in_front.wav",
 }
 
 for phrase, filename in audio_phrases.items():
@@ -30,4 +31,4 @@ for phrase, filename in audio_phrases.items():
 
 engine.runAndWait()
 
-print("Finished generating audio.")
+print("Done generating audio files.")

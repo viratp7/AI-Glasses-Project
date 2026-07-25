@@ -5,19 +5,33 @@ import pygame
 
 model = YOLO("yolov8n.pt")
 
-
-
 cap = cv2.VideoCapture(0)
 pygame.mixer.init()
 last_spoken_time = 0
 speak_cooldown = 3
 last_spoken_object = None
-sounds = {
-    "person": pygame.mixer.Sound("audio/person_in_front.wav"),
-    "keyboard": pygame.mixer.Sound("audio/keyboard_in_front.wav"),
-    "cell phone": pygame.mixer.Sound("audio/phone_in_front.wav"),
-    "stop sign": pygame.mixer.Sound("audio/stop_sign.wav")
 
+sounds = {
+    "person": {
+        "sound": pygame.mixer.Sound("audio/person_in_front.wav"),
+        "priority": 2
+    },
+    "keyboard": {
+        "sound": pygame.mixer.Sound("audio/keyboard_in_front.wav"),
+        "priority": 1
+    },
+    "cell phone": {
+        "sound": pygame.mixer.Sound("audio/phone_in_front.wav"),
+        "priority": 1
+    },
+    "stop sign": {
+        "sound": pygame.mixer.Sound("audio/stop_sign.wav"),
+        "priority": 3
+    },
+    "mouse": {
+        "sound": pygame.mixer.Sound("audio/mouse_in_front.wav"),
+        "priority": 2
+    }
 }
 
 
@@ -26,7 +40,7 @@ while True:
     success, frame = cap.read()
 
     object_to_speak = None
-
+    detection = []
     if not success:
         print("Could not read from webcam")
         break
@@ -35,7 +49,7 @@ while True:
     results = model(frame, verbose=False, stream=True)
     for result in results:
         boxes = result.boxes
-
+        
         for box in boxes:
             x1, y1, x2, y2 = box.xyxy[0]
             x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
@@ -48,24 +62,28 @@ while True:
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
                 label = f"{class_name} {confidence:.2f}"
                 cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-                object_to_speak = class_name
+                if class_name in sounds:
+                    detection.append(class_name)
                 
+    if detection:
+        detection.sort(key=lambda obj: sounds[obj]["priority"], reverse=True)
+        object_to_speak = detection[0]
      
 
                     
             
     current_time = time.time()
     if object_to_speak is not None:
- 
+
         object_changed = object_to_speak != last_spoken_object
 
         if current_time - last_spoken_time > speak_cooldown and object_changed:
-            sound = sounds.get(object_to_speak)
+            sound = sounds[object_to_speak]["sound"]
             if sound is not None:
                 sound.play()
                 print(object_to_speak)
                 last_spoken_time = current_time
-                last_spoken_object = object_to_speak
+
 
 
     cv2.imshow("AI Glasses YOLO Test", frame)
