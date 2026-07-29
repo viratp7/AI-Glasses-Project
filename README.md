@@ -1,7 +1,7 @@
 # AI-Glasses-Project
 Initial stage of a real-time object detection program that has TTS. Eventually it is going to be used for a low cost assistive medical device for the visually impaired, that uses AI models to read warnings/signs, warns them, alerts them for hazards, etc. 
 
-The current/early versions of the software are prototyping and the skeleton of the project. It uses a pretrained YOLO object detection model to detect objects through my webcam. Right now it has a early TTS feature, but it does not work proper, intdent and still needs to be ironed out.
+The current/early versions of the software are prototyping and the skeleton of the project. It uses a pretrained YOLO object detection model to detect objects through my webcam. Right now it has a early TTS feature, but it does not work properly at all, intdent and still needs to be ironed out.
 
 # Current Status
 Currently the project is in it's early software stage, not even hardware
