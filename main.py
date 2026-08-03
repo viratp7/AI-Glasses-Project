@@ -56,11 +56,31 @@ while True:
         break
 
 
-    results = model(frame, verbose=False, stream=True)
+    results = model.track(frame, verbose=False, stream=True, tracker="botsort.yaml", persist=True)
     for result in results:
-        boxes = result.boxes
+
+        if result.boxes is None:
+            continue
         
-        for box in boxes:
+
+
+        if result.boxes is not None and result.boxes.is_track:
+            boxes = result.boxes.xywh.cpu().tolist()
+            track_ids = result.boxes.id.int().cpu().tolist()
+            class_ids = result.boxes.cls.int().cpu().tolist()
+            confidences = result.boxes.conf.cpu().tolist()
+            
+            for box, track_id, class_id, confidence in zip(
+                boxes,
+                track_ids,
+                class_ids,
+                confidences
+            ):
+                if confidence > 0.6:
+                    print(box, track_id, class_id, confidence)
+
+        bboxes = result.boxes
+        for box in bboxes:
             x1, y1, x2, y2 = box.xyxy[0]
             x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
 
@@ -75,6 +95,8 @@ while True:
             frame_center_x = width / 2
             frame_center_y = height / 2
 
+
+            
             if confidence > 0.6:
 
     
@@ -109,8 +131,8 @@ while True:
             sound = sounds[object_to_speak]["sound"]
             if sound is not None:
                 sound.play()
-                print(object_to_speak)
-                print(f"Priority: {priority_to_speak:.2f}")
+                # print(object_to_speak)
+                # print(f"Priority: {priority_to_speak:.2f}")
                 last_spoken_time = current_time
                 last_spoken_object = object_to_speak
 

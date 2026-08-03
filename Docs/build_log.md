@@ -39,3 +39,17 @@
 
 ### Next Steps
 - Naturally a proximity feature added to the project, but need hardware for that, like a sensor, which is going to occur later on when I get to building my proeject. So I will add a tracking feature to avoid recalculating everything all the time.
+## DATE: 2026-07-24
+
+### What I Did
+- Added a botsory.yaml tracking system to my code, it can track moving objects and take into consideration a moving camera. I beleive it will help with object collision alerts. 
+
+### Results
+- Can track objects and give them IDS, than print all the information (for testing and iteration)
+- Does not interfer with the current basic priority sub sysstem
+- The audio still works
+- Can assign two things with the same id.
+
+### Next Steps
+- Far later add a object collision prediction and detection alerts
+- Add tracking ID as the filter wether object should be said or not, not class id.
