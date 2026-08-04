@@ -49,7 +49,7 @@
 - Does not interfer with the current basic priority sub sysstem
 - The audio still works
 - Can assign two things with the same id.
+- Uses the Id not the class name to alert the user
 
 ### Next Steps
 - Far later add a object collision prediction and detection alerts
-- Add tracking ID as the filter wether object should be said or not, not class id.
