@@ -44,7 +44,15 @@ sounds = {
    }
 }
 
-
+tracked_objects = {
+    # track_id: {
+    #     class_name,
+    #     announced,
+    #     last_alert_time,
+    #     last_priority,
+    #     last_seen
+    # }
+}
 
 while True:
     success, frame = cap.read()
@@ -67,7 +75,7 @@ while True:
         
 
 
-        if result.boxes is not None and result.boxes.is_track:
+        if result.boxes.is_track:
             boxes = result.boxes.xyxy.cpu().tolist()
             track_ids = result.boxes.id.int().cpu().tolist()
             class_ids = result.boxes.cls.int().cpu().tolist()
@@ -102,7 +110,19 @@ while True:
                             position_weight * sounds[class_name]["position_factor"])
                         
                         detection.append((track_id, class_name, final_priority))
-                
+                        if track_id not in tracked_objects:
+                            tracked_objects[track_id] = {
+                                "class_name": class_name,
+                                "consecutive_frames": 1,
+                                "announced": False
+                                # "last_alert_time": 0,
+                                # "last_priority": 0,
+                                # "last_seen": current_frame
+                            }
+                        else:
+                            tracked_objects[track_id]["consecutive_frames"] += 1
+                        
+                        print(tracked_objects)
     if detection:
         print(detection)
         detection.sort(key=lambda obj: obj[2], reverse=True)
@@ -115,15 +135,18 @@ while True:
             
     current_time = time.time()
     if object_to_speak is not None:
-        object_changed = object_to_speak != last_spoken_object
-        if current_time - last_spoken_time > speak_cooldown and object_changed:
-            sound = sounds[name_to_speak]["sound"]
-            if sound is not None:
-                sound.play()
-                print(f"Speaking: {name_to_speak}, Priority: {priority_to_speak:.2f}, track_id: {object_to_speak}")
-                # print(f"Priority: {priority_to_speak:.2f}")
-                last_spoken_time = current_time
-                last_spoken_object = object_to_speak
+        if tracked_objects[object_to_speak]["announced"] == False:
+            object_changed = object_to_speak != last_spoken_object
+            if current_time - last_spoken_time > speak_cooldown and object_changed:
+                sound = sounds[name_to_speak]["sound"]
+                if sound is not None:
+                    sound.play()
+                    
+                    print(f"Speaking: {name_to_speak}, Priority: {priority_to_speak:.2f}, track_id: {object_to_speak}")
+                    tracked_objects[object_to_speak]["announced"] = True
+                    # print(f"Priority: {priority_to_speak:.2f}")
+                    last_spoken_time = current_time
+                    last_spoken_object = object_to_speak
 
 
 

@@ -53,3 +53,24 @@
 
 ### Next Steps
 - Far later add a object collision prediction and detection alerts
+
+## DATE: 2026-08-01
+
+### What I Did
+- Started creating a tracking system that will later be used for more effincy and hopefully more complex features.
+
+### Results
+- Can store ids, if announced and amount of frames displayed outside the while loop
+
+## DATE: 2026-09-14
+
+### What I Did
+- Fixed somebugs such as tracking feature being true, instead of it being what was spoken.
+- Slightly altered the tracking flow/logic
+
+### Results
+- Created a tracking system that is more better for the long term
+
+### Next Step
+- Add mroe filters and other features that acctually help the vissualy impaired
+- Improve current code
