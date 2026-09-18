@@ -74,3 +74,13 @@
 ### Next Step
 - Add mroe filters and other features that acctually help the vissualy impaired
 - Improve current code
+
+## DATE: 2026-08-01
+
+### What I Did
+- Brainstormed ways of how my tracking system is going to work
+- Started creating a time "parimeter" or "atribute" each stored object has
+- Decided on the next mini goal
+
+### Next steps 
+- Use tracking for collision alerts

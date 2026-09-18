@@ -97,11 +97,13 @@ while True:
                 frame_center_y = height / 2
 
 
+
                 if confidence > 0.6:
                     # print(box, track_id, class_id, confidence)
                     cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
                     label = f"{class_name} {confidence:.2f}"
                     cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+                    
                     if class_name in sounds:
                         distance_from_center = abs(object_center_x - frame_center_x)
                         normalized_distance = distance_from_center / (width / 2)
@@ -114,8 +116,8 @@ while True:
                             tracked_objects[track_id] = {
                                 "class_name": class_name,
                                 "consecutive_frames": 1,
-                                "announced": False
-                                # "last_alert_time": 0,
+                                "announced": False,
+                                "last_alert_time": None,
                                 # "last_priority": 0,
                                 # "last_seen": current_frame
                             }
@@ -132,7 +134,7 @@ while True:
      
 
                     
-            
+    ctime = time.monotonic()       
     current_time = time.time()
     if object_to_speak is not None:
         if tracked_objects[object_to_speak]["announced"] == False:
@@ -144,6 +146,7 @@ while True:
                     
                     print(f"Speaking: {name_to_speak}, Priority: {priority_to_speak:.2f}, track_id: {object_to_speak}")
                     tracked_objects[object_to_speak]["announced"] = True
+                    tracked_objects[object_to_speak]["last_alert_time"] = ctime
                     # print(f"Priority: {priority_to_speak:.2f}")
                     last_spoken_time = current_time
                     last_spoken_object = object_to_speak
